@@ -5,12 +5,7 @@ terraform {
       version = "~> 3.0"
     }
   }
-
-  backend "s3" {
-    bucket = "festicket-poc-state"
-    key    = "clouds/toast/terraform.tfstate"
-    region = "eu-west-2"
-  }
+  backend "s3" {}
 }
 
 provider "aws" {
