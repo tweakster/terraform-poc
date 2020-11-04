@@ -17,15 +17,15 @@ data "terraform_remote_state" "cloud" {
 
   config = {
     bucket = "festicket-poc-state"
-    key    = "clouds/toast/terraform.tfstate"
+    key    = format("clouds/%s/terraform.tfstate", var.cloud_name)
     region = "eu-west-2"
   }
 }
 
 locals {
-  env_name  = "web"
-  type_name = "notstage"
-  azs       = ["eu-west-2a", "eu-west-2b"]
+  env_name = "web"
+  env_type = var.env_type
+  azs      = ["eu-west-2a", "eu-west-2b"]
 }
 
 module "public_subnets" {
@@ -34,7 +34,7 @@ module "public_subnets" {
   vpc_id     = data.terraform_remote_state.cloud.outputs.cloud.vpc_id
   vpc_cidr   = data.terraform_remote_state.cloud.outputs.cloud.vpc_cidr
   gateway_id = data.terraform_remote_state.cloud.outputs.cloud.gw_id
-  name       = format("%s %s public", local.env_name, local.type_name)
+  name       = format("%s %s public", local.env_name, local.env_type)
   offset     = 2
   azs        = local.azs
 }
@@ -44,7 +44,7 @@ module "private_subnets" {
 
   vpc_id   = data.terraform_remote_state.cloud.outputs.cloud.vpc_id
   vpc_cidr = data.terraform_remote_state.cloud.outputs.cloud.vpc_cidr
-  name     = format("%s %s private", local.env_name, local.type_name)
+  name     = format("%s %s private", local.env_name, local.env_type)
   offset   = 0
   azs      = local.azs
 }
