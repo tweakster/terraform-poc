@@ -29,7 +29,8 @@ locals {
 }
 
 module "public_subnets" {
-  source = "../../../../modules/subnets"
+  # This will be run from .terragrunt-cache/{hash}/{hash} so we need a lot of ../
+  source = "../../../../../../../modules/subnets"
 
   vpc_id     = data.terraform_remote_state.cloud.outputs.cloud.vpc_id
   vpc_cidr   = data.terraform_remote_state.cloud.outputs.cloud.vpc_cidr
@@ -40,7 +41,7 @@ module "public_subnets" {
 }
 
 module "private_subnets" {
-  source = "../../../../modules/subnets"
+  source = "../../../../../../../modules/subnets"
 
   vpc_id   = data.terraform_remote_state.cloud.outputs.cloud.vpc_id
   vpc_cidr = data.terraform_remote_state.cloud.outputs.cloud.vpc_cidr
