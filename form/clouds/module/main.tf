@@ -13,8 +13,9 @@ provider "aws" {
 }
 
 module "cloud" {
-  source = "../../../modules/cloud"
+  # This will be run from .terragrunt-cache/{hash}/{hash} so we need a lot of ../
+  source = "../../../../../../modules/cloud"
 
-  vpc_name = "toast"
-  vpc_cidr = "172.16.0.0/16"
+  vpc_name = var.vpc_name
+  vpc_cidr = var.vpc_cidr
 }
